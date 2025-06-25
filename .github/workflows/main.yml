@@ -31,12 +31,17 @@ jobs:
       with:
         # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
         node-version: 20.4.0 # optional
+    - name: Set up docker
+      uses: docker/setup-docker-action@v4.3.0
     - name: Echo Version
       run: |
         python -V
         mvn -version
         java -version
         node -v
+        docker -v
+
+        
     - uses: actions-tools/yaml-outputs@v2
       id: yaml
       with:
@@ -45,17 +50,31 @@ jobs:
       id: aggregate
       run: |
         colleges=()
-        # 获取所有以 colleges__ 开头的环境变量
-        env_vars=$(env | grep '^colleges__')
+        # 获取所有以 image__colleges__ 开头的环境变量
+        env_vars=$(env | grep '^image__colleges__')
         # 遍历这些环境变量
         while IFS='=' read -r key value; do
           colleges+=("$value")
         done <<< "$env_vars"
         # 将数组转换为字符串并存储到环境变量中
-        echo "colleges=${colleges[*]}" >> $GITHUB_ENV
+        echo "image__colleges=${colleges[*]}" >> $GITHUB_ENV
     - name: Read config yaml
       run: |
-        echo "${{ env.version }}"
-        echo "${{ env.colleges }}"
-        echo "${{ env.frontend_repo_url }}"
-        echo "${{ env.backend_repo_url }}"
+        echo "${{ env.image__version }}"
+        echo "${{ env.image__colleges }}"
+        echo "${{ env.repo__frontend_url }}"
+        echo "${{ env.repo__backend_url }}"
+
+        
+    - name: Clone frontend
+      uses: actions/checkout@v4
+      with: 
+        repository: ${{ env.repo__frontend_url }}
+        ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
+        ssh-known-hosts: ${{ env.repo__host }}
+        path: "material-reporting-front"
+    - name: List files to verify
+      run: |
+          ls -la
+          ls -la material-reporting-front
+
