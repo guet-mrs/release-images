@@ -4,11 +4,9 @@
 name: Build mrs packages 🥺
 
 on:
-
   workflow_dispatch:
 permissions:
   contents: read
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -39,3 +37,13 @@ jobs:
         mvn -version
         java -version
         node -v
+    - uses: actions-tools/yaml-outputs@v2
+      id: yaml
+      with:
+        file-path: './config.yaml'
+    - name: Read config yaml
+      run: |
+        echo "${{ env.version }}"
+        echo "${{ env.colleges }}"
+        echo "${{ env.frontend_repo_url }}"
+        echo "${{ env.backend_repo_url }}"
