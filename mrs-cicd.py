@@ -55,6 +55,7 @@ def deal_with_args():
         required=True,
         help="image repository password",
     )
+    parser.add_argument('--colleges', nargs='+', type=str, help='List of college IDs')
     return parser.parse_args()
 
 
@@ -234,6 +235,8 @@ if __name__ == "__main__":
     ver = args.ver
     user = args.user
     passwd = args.password
+    # colleges = ["2", "3", "7", "10", "17"]
+    colleges = args.colleges
 
     print("* current in path:", cwd)
     print("* using frontend project path:", front_path)
@@ -242,9 +245,9 @@ if __name__ == "__main__":
     print("* using image repository user:", user)
     print("* using image version:", ver)
     print("* using force:", force)
+    print("* using colleges:", colleges)
 
-    colleges = ["2", "3", "7", "10", "17"]
-    # colleges = ["3"]
+
     tasks = []
 
     distSnd, distRcv = Pipe()
