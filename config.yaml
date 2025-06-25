@@ -1,0 +1,4 @@
+version: "10.1"
+colleges: ["2", "3", "7", "10", "17"]
+frontend_repo_url: "git@gitee.com:mosqu1to/eng-edu-accreditation-manage-system.git"
+backend_repo_url: "git@gitee.com:mosqu1to/material-reporting-system.git"
