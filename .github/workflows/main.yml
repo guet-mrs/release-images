@@ -41,6 +41,18 @@ jobs:
       id: yaml
       with:
         file-path: './config.yaml'
+    - name: Aggregate colleges
+      id: aggregate
+      run: |
+        colleges=()
+        # 获取所有以 colleges__ 开头的环境变量
+        env_vars=$(env | grep '^colleges__')
+        # 遍历这些环境变量
+        while IFS='=' read -r key value; do
+          colleges+=("$value")
+        done <<< "$env_vars"
+        # 将数组转换为字符串并存储到环境变量中
+        echo "colleges=${colleges[*]}" >> $GITHUB_ENV
     - name: Read config yaml
       run: |
         echo "${{ env.version }}"
