@@ -31,7 +31,7 @@ jobs:
       with:
         # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
         node-version: 20.4.0 # optional
-    - name: Set up docker
+    - name: Set up Docker
       uses: docker/setup-docker-action@v4.3.0
     - name: Echo Version
       run: |
@@ -78,14 +78,19 @@ jobs:
       run: |
         git clone ${{ env.repo__frontend_url }} material-reporting-front
         git clone ${{ env.repo__backend_url }} material-reporting-system
+
+
+    - name: Set execute permission for script
+      run: |
+        chmod +x mrs-cicd.py
     - name: List files to verify
       run: |
           ls -la
           ls -la material-reporting-front
           ls -la material-reporting-system
 
-    - name: Execute script 
+
+    - name: Execute script 💬
       run: |
         ./mrs-cicd.py --ver ${{ env.image__version }} --colleges ${{ env.image__colleges }} \
         --url ${{ env.docker__host }}  --user ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }} 
-      
