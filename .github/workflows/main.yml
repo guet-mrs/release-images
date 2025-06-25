@@ -64,17 +64,23 @@ jobs:
         echo "${{ env.image__colleges }}"
         echo "${{ env.repo__frontend_url }}"
         echo "${{ env.repo__backend_url }}"
+        echo "${{ env.repo__host }}"
+        echo "${{ env.docker__host }}"
 
         
-    - name: Clone frontend
-      uses: actions/checkout@v4
-      with: 
-        repository: ${{ env.repo__frontend_url }}
-        ssh-key: ${{ secrets.SSH_PRIVATE_KEY }}
-        ssh-known-hosts: ${{ env.repo__host }}
-        path: "material-reporting-front"
+    - name: Set up SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -t rsa gitee.com >> ~/.ssh/known_hosts
+    - name: Clone repository via SSH
+      run: |
+        git clone ${{ env.repo__frontend_url }} material-reporting-front
+        git clone ${{ env.repo__backend_url }} material-reporting-system
     - name: List files to verify
       run: |
           ls -la
           ls -la material-reporting-front
+          ls -la material-reporting-system
 
