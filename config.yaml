@@ -3,9 +3,13 @@ image:
   colleges: ["2", "3", "7", "10", "17"]
 
 repo:
-  frontend_url: "git@gitee.com:mosqu1to/eng-edu-accreditation-manage-system.git"
-  backend_url: "git@gitee.com:mosqu1to/material-reporting-system.git"
   host: "gitee.com"
+  frontend:
+    url: "git@gitee.com:mosqu1to/eng-edu-accreditation-manage-system.git"
+    branch: "dev"
+  backend:
+    url: "git@gitee.com:mosqu1to/material-reporting-system.git"
+    branch: "dev"
   
 docker:
   host: "quay.io"
