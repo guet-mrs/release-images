@@ -90,11 +90,29 @@ jobs:
           ls -la
           ls -la material-reporting-front
           ls -la material-reporting-system
-    
 
+
+    - name: Cache npm dependencies
+      uses: actions/cache@v4.2.3
+      with:
+        path: material-reporting-front/node_modules
+        key: ${{ runner.os }}-npm-cache-${{ hashFiles('material-reporting-front/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-cache-
+    - name: Cache Maven dependencies
+      uses: actions/cache@v4.2.3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-cache-${{ hashFiles('material-reporting-system/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-cache-
+    - name: intstall dependences 
+      run: |
+        cd material-reporting-front && npm install
+        cd ../material-reporting-system && mvn install
+
+      
     - name: Execute script 💬
       run: |
-        cd material-reporting-front && npm i
-        cd ..
         ./mrs-cicd.py --ver ${{ env.image__version }} --colleges ${{ env.image__colleges }} \
         --url ${{ env.docker__host }}  --user ${{ secrets.DOCKER_USERNAME }} --password ${{ secrets.DOCKER_PASSWORD }} 
