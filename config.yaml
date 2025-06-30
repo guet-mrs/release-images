@@ -1,5 +1,5 @@
 image:
-  version: "10.0"
+  version: "10.1"
   colleges: ["2", "3", "7", "10", "17"]
 
 repo:
